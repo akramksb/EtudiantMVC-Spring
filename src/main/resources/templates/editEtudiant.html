@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Etudiants</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content1" class="container mt-5 col-md-7">
+    <form method="post" th:action="@{save(page=${page},keyword=${keyword})}">
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Id</label>
+            <label class="col-sm-2 col-form-label" th:text="${etudiant.id}"></label>
+            <div class="col-sm-10">
+                <input type="hidden" class="form-control" name="id" id="inputId" th:value="${etudiant.id}">
+                <span class="text-danger" th:errors="${etudiant.id}"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="inputNom" class="col-sm-2 col-form-label">Nom</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="nom" id="inputNom" th:value="${etudiant.nom}">
+                <span class="text-danger" th:errors="${etudiant.nom}"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="inputPreom" class="col-sm-2 col-form-label">Preom</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="prenom" id="inputPreom" th:value="${etudiant.prenom}">
+                <span class="text-danger" th:errors="${etudiant.prenom}"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="inputDate" class="col-sm-2 col-form-label">Date de Naissance</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control" name="date" id="inputDate" th:value="${etudiant.date}">
+                <span class="text-danger" th:errors="${etudiant.date}"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" name="email" id="inputEmail" th:value="${etudiant.email}">
+                <span class="text-danger" th:errors="${etudiant.email}"></span>
+            </div>
+        </div>
+
+
+        <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Genre</legend>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="genre" id="radioMasc" value="MASCULIN" th:checked="${ T(ma.enset.etudiantsmvc.resources.Genre).MASCULIN == etudiant.genre}">
+                    <label class="form-check-label" for="radioMasc">
+                        Masculin
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="genre" id="radioFem" value="FEMININ" th:checked="${ T(ma.enset.etudiantsmvc.resources.Genre).FEMININ == etudiant.genre}">
+                    <label class="form-check-label" for="radioFem">
+                        Feminin
+                    </label>
+                </div>
+                <span class="text-danger" th:errors="${etudiant.genre}"></span>
+            </div>
+        </fieldset>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 form-check-label" for="checkEnRegle">En règle</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkEnRegle" name="enRegle" th:checked="${etudiant.enRegle}">
+
+                </div>
+                <span class="text-danger" th:errors="${etudiant.enRegle}"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+<!--        <div class="">-->
+<!--            <label for="nom">Nom </label>-->
+<!--            <input class="form-control" id="nom" type="text" name="nom" th:value="${etudiant.nom}">-->
+<!--            <span th:errors="${etudiant.nom}"></span>-->
+<!--        </div>-->
+
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="prenom">Prenom</label>-->
+<!--            <input class="form-control" id="prenom" type="text" name="prenom" th:value="${etudiant.prenom}">-->
+<!--            <span th:errors="${etudiant.prenom}"></span>-->
+<!--        </div>-->
+
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="dateNaissance">Date Naissance</label>-->
+<!--            <input class="form-control" id="dateNaissance" type="text" name="dateNaissance" th:value="${etudiant.date}">-->
+<!--            <span th:errors="${etudiant.date}"></span>-->
+<!--        </div>-->
+
+<!--        -->
+
+
+<!--        <label class="form-control">Email-->
+<!--            <input class="form-control" type="text" name="dateNaissance" th:value="${etudiant.date}">-->
+<!--        </label>-->
+<!--        <span th:errors="${etudiant.email}"></span>-->
+
+<!--        <label class="form-control">Genre</label>-->
+<!--        <label class="form-check-label">-->
+<!--            <input class="form-check-input" type="radio" name="genre" value="MASCULIN">-->
+<!--            Masculin-->
+<!--        </label>-->
+<!--        <label class="form-check-label">-->
+<!--            <input class="form-check-input" type="radio" name="genre" value="FEMININ">-->
+<!--            Feminim-->
+<!--        </label>-->
+<!--        <span th:errors="${etudiant.genre}"></span>-->
+
+<!--        <label class="form-control">en regle-->
+<!--            <input type="checkbox" name="enRegle" th:checked="${etudiant.enRegle}">-->
+<!--        </label>-->
+<!--        <span th:errors="${etudiant.enRegle}"></span>-->
+    </form>
+
+</div>
+</body>
+</html>
