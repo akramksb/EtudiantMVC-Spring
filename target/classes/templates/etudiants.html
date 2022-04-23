@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>etudiants</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-2">
+        <div class="card">
+            <div class="card-header"> Liste des etudiants </div>
+            <div class="card-body">
+                <form method="get" th:action="@{index}">
+                    <input th:type="text" name="keyword" th:value="${keyword}">
+                    <button type="submit" class="btn btn-primary">Chercher</button>
+                </form>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th><th>Nom</th><th>Prenom</th><th>Email</th><th>Date</th><th>Genre</th><th>En Regle</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="e:${listEtudiants}">
+                        <td th:text="${e.id}"></td>
+                        <td th:text="${e.nom}"></td>
+                        <td th:text="${e.prenom}"></td>
+                        <td th:text="${e.email}"></td>
+                        <td th:text="${e.date}"></td>
+                        <td th:text="${e.genre}"></td>
+                        <td th:text="${e.enRegle}"></td>
+                        <td>
+                            <a class="btn btn-danger"
+                               onclick="confirm('are you sure?')"
+                               th:href="@{delete(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
+                                Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page_index : ${#numbers.sequence(0, pages - 1)}">
+                        <a th:class=" ${page_index == currentPage? 'btn btn-primary me-1' : 'btn btn-outline-primary me-1' } "
+                           th:text="${page_index}"
+                           th:href="@{index(page=${page_index}, keyword=${keyword})}"
+                        ></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
