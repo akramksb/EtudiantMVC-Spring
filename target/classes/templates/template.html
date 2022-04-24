@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -20,32 +22,44 @@
 
             <div class=" collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto ">
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link mx-2 active" aria-current="page" href="#">Home</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link mx-2" href="#">Tous les etudiants</a>-->
+<!--                    </li>-->
+
                     <li class="nav-item">
-                        <a class="nav-link mx-2 active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link mx-2" th:href="@{/user/index}">List des étudiants</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link mx-2" href="#">Tous les etudiants</a>
+                        <a class="nav-link mx-2" th:href="@{/admin/formEtudiants}" sec:authorize="hasRole('ADMIN')">Nouveau</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link mx-2" th:href="@{/formEtudiants}">Nouveau</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mx-2" th:href="@{/index}">Chercher</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Company
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Blog</a></li>
-                            <li><a class="dropdown-item" href="#">About Us</a></li>
-                            <li><a class="dropdown-item" href="#">Contact us</a></li>
-                        </ul>
-                    </li>
+
+<!--                    <li class="nav-item dropdown">-->
+<!--                        <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                            Company-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
+<!--                            <li><a class="dropdown-item" href="#">Blog</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">About Us</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Contact us</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
                 </ul>
                 <ul class="navbar-nav ms-auto d-lg-inline-flex">
-                    <li class="nav-item">
+
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link mx-2"><span sec:authentication="name"></span></a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="nav-link mx-2" th:href="@{/logout}">Logout</a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link mx-2" th:href="@{/login}">Login</a>
                     </li>
 <!--                    <li class="nav-item mx-2">-->
 <!--                        <a class="nav-link text-dark h5" href="" target="blank"><i class="fab fa-google-plus-square"></i></a>-->

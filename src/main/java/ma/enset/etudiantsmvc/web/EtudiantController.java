@@ -25,10 +25,10 @@ public class EtudiantController {
 
     @GetMapping("/")
     public String home(){
-        return "redirect:/index";
+        return "home";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     public String etudiants(Model model,
                             @RequestParam(name="page",defaultValue = "0") int page,
                             @RequestParam(name = "size",defaultValue = "5") int size,
@@ -41,34 +41,36 @@ public class EtudiantController {
         return "etudiants";
     }
 
-    @GetMapping("/delete")
-    public String delete( Long id, String keyword, int page){
+    @GetMapping("/admin/delete")
+    public String delete( Long id,
+                          @RequestParam(name = "keyword",defaultValue = "") String keyword,
+                          @RequestParam(name="page",defaultValue = "0") int page){
         etudiantRepository.deleteById( id );
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
-    @GetMapping("etudiants")
+    @GetMapping("/user/etudiants")
     @ResponseBody
     public List<Etudiant> listEtudiants(){
         return etudiantRepository.findAll();
     }
 
-    @GetMapping("/formEtudiants")
+    @GetMapping("/admin/formEtudiants")
     public String formEtudiants(Model model){
         model.addAttribute( "etudiant", new Etudiant() );
         return "formEtudiants";
     }
 
-    @PostMapping( "/save" )
+    @PostMapping( "/admin/save" )
     public String save(Model model, @Valid Etudiant etudiant, BindingResult bindingResult,
                        @RequestParam(name = "keyword",defaultValue = "") String keyword,
                        @RequestParam(name="page",defaultValue = "0") int page){
         if (bindingResult.hasErrors()) return "formEtudiants";
         etudiantRepository.save( etudiant );
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
-    @GetMapping("/editEtudiant")
+    @GetMapping("/admin/editEtudiant")
     public String editEtudiant(Model model, Long id , String keyword, int page){
         Etudiant etudiant = etudiantRepository.findById(id).orElse(null);
         if (etudiant==null) throw new RuntimeException("etudiant introuvable");

@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="template">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +15,7 @@
         <div class="card">
             <div class="card-header"> Liste des etudiants </div>
             <div class="card-body">
-                <form method="get" th:action="@{index}">
+                <form method="get" th:action="@{user/index}">
                     <input th:type="text" name="keyword" th:value="${keyword}">
                     <button type="submit" class="btn btn-primary">Chercher</button>
                 </form>
@@ -35,15 +36,15 @@
                         <td th:text="${e.date}"></td>
                         <td th:text="${e.genre}"></td>
                         <td th:text="${e.enRegle}"></td>
-                        <td>
+                        <td sec:authorize="hasRole('ADMIN')">
                             <a class="btn btn-danger"
                                onclick="return confirm('are you sure?')"
-                               th:href="@{delete(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
+                               th:href="@{admin/delete(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
                                 Delete</a>
                         </td>
-                        <td>
+                        <td sec:authorize="hasRole('ADMIN')">
                             <a class="btn btn-info"
-                               th:href="@{editEtudiant(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
+                               th:href="@{admin/editEtudiant(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
                                 Edit</a>
                         </td>
                     </tr>
@@ -53,7 +54,7 @@
                     <li th:each="page_index : ${#numbers.sequence(0, pages - 1)}">
                         <a th:class=" ${page_index == currentPage? 'btn btn-primary me-1' : 'btn btn-outline-primary me-1' } "
                            th:text="${page_index}"
-                           th:href="@{index(page=${page_index}, keyword=${keyword})}"
+                           th:href="@{user/index(page=${page_index}, keyword=${keyword})}"
                         ></a>
                     </li>
                 </ul>

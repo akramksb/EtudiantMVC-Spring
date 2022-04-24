@@ -17,15 +17,15 @@ public class EtudiantsMvcApplication {
         SpringApplication.run(EtudiantsMvcApplication.class, args);
     }
 
-    @Bean
+//    @Bean
     CommandLineRunner commandLineRunner(EtudiantRepository etudiantRepository){
         return args -> {
-//            etudiantRepository.save(
-//                    new Etudiant( null, "Akram", "Kssiba", "email", new Date(), Genre.MASCULIN, true));
-//            etudiantRepository.save(
-//                    new Etudiant( null, "Tarik", "Ofkir", "email", new Date(), Genre.MASCULIN, true));
-//            etudiantRepository.save(
-//                    new Etudiant( null, "Zakaria", "Hadoumi", "email", new Date(), Genre.MASCULIN, true));
+            etudiantRepository.save(
+                    new Etudiant( null, "Akram", "Kssiba", "email", new Date(), Genre.MASCULIN, true));
+            etudiantRepository.save(
+                    new Etudiant( null, "Tarik", "Ofkir", "email", new Date(), Genre.MASCULIN, true));
+            etudiantRepository.save(
+                    new Etudiant( null, "Zakaria", "Hadoumi", "email", new Date(), Genre.MASCULIN, true));
 
             etudiantRepository.findAll().forEach( etudiant -> {
                 System.out.println( etudiant.getId() + " "+ etudiant.getPrenom() );
