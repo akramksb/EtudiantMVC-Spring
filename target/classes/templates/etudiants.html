@@ -35,13 +35,13 @@
                         <td th:text="${e.date}"></td>
                         <td th:text="${e.genre}"></td>
                         <td th:text="${e.enRegle}"></td>
-                        <td sec:authorize="hasRole('ADMIN')">
+                        <td sec:authorize="hasAuthority('ADMIN')">
                             <a class="btn btn-danger"
                                onclick="return confirm('are you sure?')"
                                th:href="@{/admin/delete(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
                                 Delete</a>
                         </td>
-                        <td sec:authorize="hasRole('ADMIN')">
+                        <td sec:authorize="hasAuthority('ADMIN')">
                             <a class="btn btn-info"
                                th:href="@{/admin/editEtudiant(id=${e.id}, keyword=${keyword}, page=${currentPage})}">
                                 Edit</a>
