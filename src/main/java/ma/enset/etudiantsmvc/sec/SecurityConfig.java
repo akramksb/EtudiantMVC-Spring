@@ -1,5 +1,6 @@
 package ma.enset.etudiantsmvc.sec;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,22 +10,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private DataSource dataSource;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//      auth.inMemoryAuthentication()
-//                .withUser("user1").password("{noop}1234").roles("USER");
-
         PasswordEncoder passwordEncoder = passwordEncoder();
-        String encodedPWD = passwordEncoder.encode("1234");
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username as principal, password as credentials, active from users where username=?")
+                .authoritiesByUsernameQuery( "select username as principal, role as role from users_roles where username=?" )
+                .rolePrefix("ROLE_")
+                .passwordEncoder( passwordEncoder );
 
-        auth.inMemoryAuthentication().withUser("user1")
-                .password(encodedPWD).roles("USER");
-
-        auth.inMemoryAuthentication().withUser("admin")
-                .password(encodedPWD).roles("USER", "ADMIN");
     }
 
     @Override
