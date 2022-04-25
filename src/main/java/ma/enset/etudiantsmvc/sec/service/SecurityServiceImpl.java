@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Service
-@Slf4j
 @AllArgsConstructor
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
