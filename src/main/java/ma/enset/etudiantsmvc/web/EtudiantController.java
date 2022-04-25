@@ -55,12 +55,6 @@ public class EtudiantController {
         return etudiantRepository.findAll();
     }
 
-    @GetMapping("/admin/formEtudiants")
-    public String formEtudiants(Model model){
-        model.addAttribute( "etudiant", new Etudiant() );
-        return "formEtudiants";
-    }
-
     @PostMapping( "/admin/save" )
     public String save(Model model, @Valid Etudiant etudiant, BindingResult bindingResult,
                        @RequestParam(name = "keyword",defaultValue = "") String keyword,
@@ -68,6 +62,12 @@ public class EtudiantController {
         if (bindingResult.hasErrors()) return "formEtudiants";
         etudiantRepository.save( etudiant );
         return "redirect:/user/index?page="+page+"&keyword="+keyword;
+    }
+
+    @GetMapping("/admin/formEtudiants")
+    public String formEtudiants(Model model){
+        model.addAttribute( "etudiant", new Etudiant() );
+        return "formEtudiants";
     }
 
     @GetMapping("/admin/editEtudiant")
