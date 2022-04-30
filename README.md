@@ -1,10 +1,10 @@
 # JEE_EtudiantMVC
-Activité Pratique Spring MVC, Spring Data JPA, Spring Security  
+_Activité Pratique Spring MVC, Spring Data JPA, Spring Security_  
 
-Dans cette activité pratique créer une application Web basée sur Spring MVC, Spring Data JPA et Spring Security qui permet de gérer des étudiants.
+Dans cette activité pratique on va créer une application Web basée sur Spring MVC, Spring Data JPA et Spring Security qui permet de gérer des étudiants.
 
-### Dependences
-Pour les dependences on est besoin de Spring Data Jpa, Spring Web, Spring Security, Thymeleaf, MySQL Driver, Lombok.
+### Dépendences
+Pour les dependences on est besoin de __Spring Data Jpa__, __Spring Web__, __Spring Security__, __Thymeleaf__, __MySQL Driver__ et __Lombok__.
 
 ### Entités
 On crée la classe persistante Etudiant, chaque étudiant est défini par:  
@@ -76,11 +76,11 @@ Pour communiquer avec les vues, on utilise un `Model` que l'on utilise pour pass
 
 ### Vues
 On génère les pages html à partir des vues avec le moteur de template `thymeleaf`.  
-Donc, pour chaque page on va créer une vue qui est une page html avec le namespace suivant ``xmlns:th="http://www.thymeleaf.org"``.  
+Donc, pour chaque page on va créer une vue qui est une page html avec le namespace suivant `xmlns:th="http://www.thymeleaf.org"`.  
 
 Pour ne pas répéter la bar de navigation à chaque fois, on peut créer une page `template` qu'on va utiliser dans toutes les vues.  
-Pour cela on crée un fichier `template.html` avec le namespace ``xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"`` à l'addition de ``xmlns:th``.  
-Et une balise ``section`` avec l'attribut ``layout:fragment``, qui indique un fragment dans lequel on peut injecter du code html à partir des autres vues.  
+Pour cela on crée un fichier `template.html` avec le namespace `xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"` à l'addition de `xmlns:th`.  
+Et une balise `section` avec l'attribut `layout:fragment`, qui indique un fragment dans lequel on peut injecter du code html à partir des autres vues.  
 
 >template.html
 ```html
@@ -109,5 +109,47 @@ Puis on definit le contenu du fragment avec ``layout:fragment``.
 </html>
 ```
 
+### Security
+Dans la partie sécurité, on crée les entités `AppUser` et `AppRole` avec leur repositories pour les utilisateurs et les rôles.
 
 
+Pour configurer l'authentification et definir les droit d'accés, on crée une classe `SecurityConfig` qui hérite de `WebSecurityConfigurerAdapter`, avec les annotations : `@Configuration` et `@EnableWebSecurity`  
+
+Puis on redefinit les deux méthodes : [voir l'implementation](./src/main/java/ma/enset/etudiantsmvc/sec/SecurityConfig.java)  
+```java
+protected void configure(AuthenticationManagerBuilder auth)
+protected void configure(HttpSecurity http)
+```
+
+Pour l'authentification on utilise `UserDetailsService` pour cela on crée notre propre implementation de cette interface. On doit donc redefinir la méthode `loadUserByUsername` qui permet de récupérer des données relatives à l'utilisateur.
+
+```java
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+    private SecurityService securityService;
+
+    public UserDetailsServiceImpl(SecurityService securityService) {
+        this.securityService = securityService;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser appUser = securityService.loadUserByUserName(username);
+
+        Collection<GrantedAuthority> authorities = appUser.getAppRoles()
+                .stream().map( role-> new SimpleGrantedAuthority(role.getRoleName()))
+                .collect(Collectors.toList());
+
+        User user = new User( appUser.getUsername(), appUser.getPassword(), authorities);
+        return user;
+    }
+}
+```
+
+
+Finalement, dans les vues, pour afficher un contenu différent selon le rôle d'utilisateur, on doit premièrement utiliser l'espace de nom : `xmlns:sec="http://www.thymeleaf.org/extras/spring-security"`.  
+Par exemple, si on veut afficher un contenu, à un utilisateur avec le rôle admin, on peut faire : 
+```html
+<div sec:authorize="hasAuthority('ADMIN')">.
+```
+et si on veut autoriser tous les utilisateur authentifiés on utilise : `sec:authorize="isAuthenticated()"`
