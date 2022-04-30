@@ -153,3 +153,13 @@ Par exemple, si on veut afficher un contenu, à un utilisateur avec le rôle adm
 <div sec:authorize="hasAuthority('ADMIN')">.
 ```
 et si on veut autoriser tous les utilisateur authentifiés on utilise : `sec:authorize="isAuthenticated()"`
+
+### Screen Shots  
+
+__la liste des étudiants en tant qu'administrateur__  
+![liste des etudiant as admin](./.screen%20shots/Screenshot%202022-04-30%20230000.png)  
+
+
+__la liste des étudiants en tant qu'utilisateur__    
+![liste des etudiant as admin](./.screen%20shots/Screenshot%202022-04-30%20230054.png)
+
